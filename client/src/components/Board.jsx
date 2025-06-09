@@ -4,7 +4,7 @@ import { FaCopy } from "react-icons/fa";
 import Menu from "./Menu";
 import { toast } from "react-hot-toast";
 
-const socket = io("http://localhost:5000");
+const socket = io("https://tic-tac-toe-realtime.onrender.com");
 const initialBoard = Array(9).fill(null);
 
 function Board() {
