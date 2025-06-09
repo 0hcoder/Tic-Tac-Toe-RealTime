@@ -6,7 +6,7 @@ const { v4: uuidv4 } = require("uuid");
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
-  cors: { origin: "https://tic-tac-toe-real-time.vercel.app/", methods: ["GET", "POST"] },
+  cors: { origin: "https://tic-tac-toe-real-time.vercel.app", methods: ["GET", "POST"] },
 });
 
 const rooms = {};
