@@ -1,10 +1,11 @@
 import { useState, useEffect } from "react";
-import io from "socket.io-client";
+import {io} from "socket.io-client";
 import { FaCopy } from "react-icons/fa";
 import Menu from "./Menu";
 import { toast } from "react-hot-toast";
 
-const socket = io("https://tic-tac-toe-realtime.onrender.com");
+const socket = io(import.meta.env.VITE_TEST);
+
 const initialBoard = Array(9).fill(null);
 
 function Board() {
@@ -26,7 +27,9 @@ function Board() {
 
   const joinRoom = () => {
     const id = prompt("Enter room ID:");
-    if (!id.trim()) {
+    
+    
+    if (!id === true || !id.trim()) {
       toast.error("Enter valid room id");
       return;
     }

@@ -2,18 +2,18 @@ const express = require("express");
 const http = require("http");
 const { Server } = require("socket.io");
 const { v4: uuidv4 } = require("uuid");
+const dotenv = require("dotenv")
+dotenv.config()
 
 const app = express();
 const server = http.createServer(app);
 const io = new Server(server, {
-  cors: { origin: "https://tic-tac-toe-real-time.vercel.app", methods: ["GET", "POST"] },
+  cors: { origin: process.env.CLIENT_URL, methods: ["GET", "POST"] },
 });
 
 const rooms = {};
 
 io.on("connection", (socket) => {
-  console.log("User connected:", socket.id);
-
   socket.on("createRoom", (callback) => {
     const roomId = uuidv4().slice(0, 6);
     rooms[roomId] = [socket.id];
@@ -51,6 +51,6 @@ io.on("connection", (socket) => {
   });
 });
 
-server.listen(5000, () => {
+server.listen(process.env.PORT || 3000, () => {
   console.log("Server is runing");
 });
