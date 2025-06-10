@@ -4,7 +4,7 @@ import { FaCopy } from "react-icons/fa";
 import Menu from "./Menu";
 import { toast } from "react-hot-toast";
 
-const socket = io(import.meta.env.VITE_TEST);
+const socket = io(import.meta.env.VITE_REACT_APP_SOCKET_URL);
 
 const initialBoard = Array(9).fill(null);
 
