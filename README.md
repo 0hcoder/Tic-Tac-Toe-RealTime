@@ -1,8 +1,3 @@
-Awesome! Here's your updated `README.md` with the requested **Features**, **Project Structure**, **Index**, **Roadmap**, **Contribution**, **License**, and **Acknowledgements** sections added.
-
----
-
-````markdown
 # TIC-TAC-TOE-REALTIME  
 *Play Together, Win Together in Real-Time Fun!*  
 
