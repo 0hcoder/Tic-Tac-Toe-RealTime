@@ -144,10 +144,3 @@ We welcome contributions!
 ---
 
 ⬆ [Return to top](#top)
-
-```
-
----
-
-Would you like me to add badges (like GitHub stars, forks, license) or generate a visual banner/logo for the top of your README as well?
-```
