@@ -22,15 +22,16 @@ io.on("connection", (socket) => {
   });
 
   socket.on("joinRoom", (roomId, callback) => {
-    if (rooms[roomId] && rooms[roomId].length === 1) {
-      rooms[roomId].push(socket.id);
-      socket.join(roomId);
-      callback({ success: true });
-      io.to(roomId).emit("startGame");
-    } else {
-      callback({ success: false });
-    }
-  });
+  if (rooms[roomId] && rooms[roomId].length === 1) {
+    rooms[roomId].push(socket.id);
+    socket.join(roomId);
+    callback({ success: true });
+    io.to(roomId).emit("startGame");
+  } else {
+    callback({ success: false });
+  }
+});
+
   socket.on("makeMove", ({ roomId, index, player }) => {
     socket.to(roomId).emit("opponentMove", { index, player });
   });

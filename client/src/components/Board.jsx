@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import {io} from "socket.io-client";
+import { io } from "socket.io-client";
 import { FaCopy } from "react-icons/fa";
 import Menu from "./Menu";
 import { toast } from "react-hot-toast";
@@ -13,6 +13,7 @@ function Board() {
   const [joined, setJoined] = useState(false);
   const [board, setBoard] = useState(initialBoard);
   const [player, setPlayer] = useState("");
+  const [opponentJoined, setOpponentJoined] = useState(false);
   const [isXTurn, setIsXTurn] = useState(true);
   const [winner, setWinner] = useState(null);
   const [winningLine, setWinningLine] = useState([]);
@@ -27,8 +28,6 @@ function Board() {
 
   const joinRoom = () => {
     const id = prompt("Enter room ID:");
-    
-    
     if (!id === true || !id.trim()) {
       toast.error("Enter valid room id");
       return;
@@ -45,6 +44,10 @@ function Board() {
   };
 
   const handleClick = (idx) => {
+    if (!opponentJoined) {
+      toast.error("Wait for opponent to join");
+      return;
+    }
     if (board[idx] || !isMyTurn() || winner) return;
 
     const newBoard = [...board];
@@ -115,23 +118,32 @@ function Board() {
     });
     return () => socket.off("rematch");
   }, []);
-useEffect(() => {
-  socket.on("opponentLeft", () => {
-    toast.error("Opponent has left the game.");
-    setJoined(false);
-    setRoomId(null);
-    setBoard(initialBoard); // not intialBoard
-    setPlayer(null);
-    setIsXTurn(true);
-    setWinner(null);
-    setWinningLine([]);
-  });
 
-  return () => {
-    socket.off("opponentLeft");
-  };
-}, []);
+  useEffect(() => {
+    socket.on("startGame", () => {
+      setOpponentJoined(true);
+      toast.success("Opponent joined. Game started!");
+    });
 
+    return () => socket.off("startGame");
+  }, []);
+
+  useEffect(() => {
+    socket.on("opponentLeft", () => {
+      toast.error("Opponent has left the game.");
+      setJoined(false);
+      setRoomId(null);
+      setBoard(initialBoard);
+      setPlayer(null);
+      setIsXTurn(true);
+      setWinner(null);
+      setWinningLine([]);
+    });
+
+    return () => {
+      socket.off("opponentLeft");
+    };
+  }, []);
 
   return (
     <div
@@ -145,15 +157,17 @@ useEffect(() => {
         <Menu createRoom={createRoom} joinRoom={joinRoom} />
       ) : (
         <>
-          <div className="flex items-center space-x-2 mb-6">
-            <span className="font-mono text-lg bg-white text-gray-800 px-3 py-1 rounded-lg shadow">
-              Room: {roomId}
-            </span>
-            <FaCopy
-              className="cursor-pointer text-xl text-yellow-300 hover:text-yellow-900"
-              onClick={copyText}
-            />
-          </div>
+          {!opponentJoined && (
+            <div className="flex items-center space-x-2 mb-6">
+              <span className="font-mono text-lg bg-white text-gray-800 px-3 py-1 rounded-lg shadow">
+                Room: {roomId}
+              </span>
+              <FaCopy
+                className="cursor-pointer text-xl text-yellow-300 hover:text-yellow-900"
+                onClick={copyText}
+              />
+            </div>
+          )}
           <div className="grid grid-cols-3 gap-4">
             {board.map((cell, idx) => (
               <button
@@ -189,6 +203,9 @@ useEffect(() => {
             >
               Rematch
             </button>
+          )}
+          {!opponentJoined && (
+            <p className="mt-4 text-red-400">Waiting for opponent to join...</p>
           )}
 
           {!isMyTurn() && !winner && !board.every((cell) => cell) && (
