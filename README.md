@@ -2,7 +2,7 @@
 *Play Together, Win Together in Real-Time Fun!*  
 
 Built with the tools and technologies:  
-Express, JSON, Markdown, Socket.io, npm, JavaScript, Nodemon, React, Vite, ESLint, Axios  
+Express, JSON, Markdown, Socket.io, npm, JavaScript, React, Vite, ESLint
 
 ## Table of Contents  
 - [Overview](#overview)  
