@@ -19,10 +19,12 @@ function Board() {
   const [winningLine, setWinningLine] = useState([]);
 
   const createRoom = () => {
+    const toastId = toast.loading("Connecting to server...");
     socket.emit("createRoom", (id) => {
       setRoomId(id);
       setJoined(true);
       setPlayer("X");
+      toast.success("Room created!", { id: toastId });
     });
   };
 
